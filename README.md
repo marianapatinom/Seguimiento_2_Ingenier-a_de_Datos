@@ -41,3 +41,7 @@ Una vez que el comando inicie, Streamlit te dará un enlace local (generalmente 
 * **📈 Análisis Exploratorio**: Visualizaciones profundas mediante Histogramas y Boxplots creados a partir de `plotly.express`.
 * **🌍 Mapa de Impacto**: Despliegue global en 2D mapeando las ubicaciones de los siniestros y redireccionamientos.
 * **🤖 Análisis Predictivo**: Permite alimentar métricas hipotéticas o reales en cajas configurables para calcular instantáneamente el impacto financiero estimado (Estimación Predictiva usando *scikit-learn*).
+
+---
+**Realizado por Mariana Patiño Múnera**
+
