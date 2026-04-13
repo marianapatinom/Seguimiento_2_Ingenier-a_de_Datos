@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Interrupciones Aéreas - Data Science</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --secondary: #ec4899;
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            background: radial-gradient(circle at top, #1e1b4b, #0f172a);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero-content {
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 30px -5px rgba(236, 72, 153, 0.6);
+        }
+
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            color: var(--text-light);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(79, 70, 229, 0.4);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .code-block {
+            background: #020617;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            font-family: monospace;
+            color: #a5b4fc;
+            overflow-x: auto;
+            margin-top: 1.5rem;
+            border: 1px solid #1e293b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 4rem;
+        }
+
+        .made-by {
+            color: var(--text-muted);
+        }
+
+        .made-by span {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="hero-content">
+            <span class="tag">Machine Learning & ETL</span>
+            <h1>Análisis de Interrupciones en Aerolíneas</h1>
+            <p>Descubre patrones y estima impactos financieros en la aviación civil con nuestro panel inteligente predictivo en tiempo real.</p>
+            <a href="#how-it-works" class="btn">Conoce nuestro proceso</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="how-it-works" class="section">
+            <h2 class="section-title">El Proceso de Ciencia de Datos</h2>
+            <div class="grid">
+                
+                <div class="card">
+                    <div class="card-icon">1️⃣</div>
+                    <h3>Extracción de Datos (Extract)</h3>
+                    <p>Obtenemos nuestro dataset directamente desde la fuente ("Airline Disruptions Dataset") en Kaggle. Los datos contienen cancelaciones, redirecciones y el impacto de los pasajeros a lo largo de diversos continentes.</p>
+                    <div class="code-block">import pandas as pd<br>df = pd.read_csv("airline_losses_estimate.csv")</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">2️⃣</div>
+                    <h3>Limpieza y Transformación (Transform)</h3>
+                    <p>Aplicamos técnicas de depuración profunda: eliminamos valores faltantes, homogeneizamos tipos de datos numéricos y creamos variables derivadas como <strong>"impact_level"</strong> para clasificar el impacto base.</p>
+                    <div class="code-block">df = df.dropna()<br>df["cancelled_flights"] = df["cancelled_flights"].astype(int)</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">3️⃣</div>
+                    <h3>Carga de Información (Load)</h3>
+                    <p>Un dataset completamente impoluto está listo para el modelado y consumo por sistemas Business Intelligence (AppSheet) o paneles interactivos interactivos profesionales con Streamlit y Plotly.</p>
+                    <div class="code-block">df.to_csv("cleaned_dataset.csv")</div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Análisis Exploratorio y Descubrimientos</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>📊 Distribución y Frecuencias</h3>
+                    <p>Notamos que algunos países y aerolíneas absorben el impacto mucho peor que otros. Mediante <strong>Histogramas y Boxplots</strong> comprobamos que el número de incidentes graves se focaliza en regiones hiper-densas en tráfico.</p>
+                </div>
+                <div class="card">
+                    <h3>🌍 Mapa de Calor Financiero</h3>
+                    <p>Los mapas de dispersión geográfica revelan a simple vista dónde las aerolíneas acumulan pérdidas millonarias: Asia y Medio Oriente, mientras la relación entre vuelos cancelados y pérdidas no es siempre líneal, dependerá drásticamente de los costos de combustible adicional.</p>
+                </div>
+                <div class="card">
+                    <h3>🤖 Análisis Predictivo</h3>
+                    <p>¿Qué pasa si mañana hay 15 vuelos cancelados de improviso? Usamos modelos predictivos con Machine Learning (Regresión Lineal Simple) integrados a nuestro portal Streamlit interactivo para prever las pérdidas operativas con total fluidez.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="made-by">Diseñado y creado por <span>Mariana Patiño Múnera</span></p>
+    </footer>
+
+</body>
+<!-- 
+Landing Page creada y estilizada modernamente, paso a paso con los requisitos exigidos por el cuaderno .ipynb
+-->
+</html>
